@@ -1,20 +1,36 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { cards, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
+import { cards, games, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
 import { formatYen } from "../utils/format";
 
 export default function CardListPage() {
   const [searchText, setSearchText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const prefecture = searchParams.get("prefecture") ?? "";
+  const game = searchParams.get("game") ?? "";
+
+  const updateParam = (key: "prefecture" | "game", value: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setSearchParams(next);
+  };
 
   const filteredCards = useMemo(() => {
     const q = searchText.trim();
-    if (!q) return cards;
-    return cards.filter(
-      (c) => c.cardName.includes(q) || c.modelNumber.includes(q)
-    );
-  }, [searchText]);
+    return cards.filter((c) => {
+      const matchesQuery = !q || c.cardName.includes(q) || c.modelNumber.includes(q);
+      const matchesGame = !game || c.game === game;
+      return matchesQuery && matchesGame;
+    });
+  }, [searchText, game]);
+
+  const queryString = (cardId: string) => {
+    const params = new URLSearchParams();
+    if (prefecture) params.set("prefecture", prefecture);
+    const qs = params.toString();
+    return `/card/${cardId}${qs ? `?${qs}` : ""}`;
+  };
 
   return (
     <div className="page">
@@ -26,12 +42,21 @@ export default function CardListPage() {
           onChange={(e) => setSearchText(e.target.value)}
         />
         <select
+          aria-label="タイトルで絞り込み"
+          value={game}
+          onChange={(e) => updateParam("game", e.target.value)}
+        >
+          <option value="">すべてのタイトル</option>
+          {games.map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
+        </select>
+        <select
           aria-label="都道府県で絞り込み"
           value={prefecture}
-          onChange={(e) => {
-            const value = e.target.value;
-            setSearchParams(value ? { prefecture: value } : {});
-          }}
+          onChange={(e) => updateParam("prefecture", e.target.value)}
         >
           <option value="">すべての都道府県</option>
           {prefectures.map((p) => (
@@ -48,14 +73,11 @@ export default function CardListPage() {
           const diff = maxPriceDifference(card.id, prefecture || undefined);
           return (
             <li key={card.id}>
-              <Link
-                to={`/card/${card.id}${prefecture ? `?prefecture=${prefecture}` : ""}`}
-                className="card-row"
-              >
+              <Link to={queryString(card.id)} className="card-row">
                 <div className="card-row-header">
                   <span className="card-name">{card.cardName}</span>
                   <span className="card-meta">
-                    {card.modelNumber} ・ {card.rarity}
+                    {card.game} ・ {card.modelNumber} ・ {card.rarity}
                   </span>
                 </div>
 

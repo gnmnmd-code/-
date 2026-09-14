@@ -1,6 +1,8 @@
 // カード1種類を表す型
 export interface Card {
   id: string;
+  /** 対応タイトル 例: ONE PIECEカードゲーム / ポケモンカード */
+  game: string;
   cardName: string;
   /** 型番 例: OP05-119 */
   modelNumber: string;

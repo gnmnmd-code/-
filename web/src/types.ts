@@ -13,6 +13,8 @@ export interface Shop {
   id: string;
   shopName: string;
   address: string;
+  /** 都道府県（例: 東京都） */
+  prefecture: string;
   latitude: number;
   longitude: number;
   businessHours: string;

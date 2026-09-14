@@ -1,10 +1,12 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { cardById, maxPriceDifference, priceEntriesForCard } from "../data/mockData";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { cardById, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
 import { formatYen } from "../utils/format";
 
 export default function CardDetailPage() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const prefecture = searchParams.get("prefecture") ?? "";
   const card = cardId ? cardById(cardId) : undefined;
 
   if (!card) {
@@ -16,8 +18,8 @@ export default function CardDetailPage() {
     );
   }
 
-  const entries = priceEntriesForCard(card.id);
-  const diff = maxPriceDifference(card.id);
+  const entries = priceEntriesForCard(card.id, prefecture || undefined);
+  const diff = maxPriceDifference(card.id, prefecture || undefined);
 
   return (
     <div className="page">
@@ -38,32 +40,57 @@ export default function CardDetailPage() {
         </div>
       </div>
 
-      <h3>店舗別 買取価格</h3>
-      <table className="price-table">
-        <thead>
-          <tr>
-            <th>店舗</th>
-            <th>買取価格</th>
-            <th>更新日時</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry, index) => (
-            <tr key={entry.shop.id}>
-              <td>
-                {entry.shop.shopName}
-                {index === 0 && <span className="badge">最高額</span>}
-              </td>
-              <td className="price">{formatYen(entry.priceData.price)}</td>
-              <td className="updated-at">
-                {new Date(entry.priceData.updatedAt).toLocaleString("ja-JP")}
-              </td>
-            </tr>
+      <div className="filters">
+        <select
+          aria-label="都道府県で絞り込み"
+          value={prefecture}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchParams(value ? { prefecture: value } : {});
+          }}
+        >
+          <option value="">すべての都道府県</option>
+          {prefectures.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+      </div>
 
-      <Link to={`/map?cardId=${card.id}`} className="map-link-button">
+      <h3>店舗別 買取価格</h3>
+      {entries.length === 0 ? (
+        <p className="empty-state">この都道府県の店舗データはありません</p>
+      ) : (
+        <table className="price-table">
+          <thead>
+            <tr>
+              <th>店舗</th>
+              <th>買取価格</th>
+              <th>更新日時</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((entry, index) => (
+              <tr key={entry.shop.id}>
+                <td>
+                  {entry.shop.shopName}
+                  {index === 0 && <span className="badge">最高額</span>}
+                </td>
+                <td className="price">{formatYen(entry.priceData.price)}</td>
+                <td className="updated-at">
+                  {new Date(entry.priceData.updatedAt).toLocaleString("ja-JP")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <Link
+        to={`/map?cardId=${card.id}${prefecture ? `&prefecture=${prefecture}` : ""}`}
+        className="map-link-button"
+      >
         この価格で店舗を地図で見る
       </Link>
     </div>

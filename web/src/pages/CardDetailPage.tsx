@@ -33,7 +33,7 @@ export default function CardDetailPage() {
         <div>
           <h2>{card.cardName}</h2>
           <p className="card-meta">
-            {card.game} ・ {card.modelNumber} ・ {card.rarity}
+            {card.modelNumber} ・ {card.rarity}
           </p>
           <p className="diff-row">
             最大差額 <span className="diff-amount">+{formatYen(diff)}</span>

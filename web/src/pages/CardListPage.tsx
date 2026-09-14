@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { cards, games, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
+import { cards, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
 import { mercariSearchUrl } from "../config/mercari";
 import { formatUpdatedAt, formatYen } from "../utils/format";
 
@@ -9,23 +9,25 @@ export default function CardListPage() {
   const [searchText, setSearchText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const prefecture = searchParams.get("prefecture") ?? "";
-  const game = searchParams.get("game") ?? "";
 
-  const updateParam = (key: "prefecture" | "game", value: string) => {
+  const updateParam = (key: "prefecture", value: string) => {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value);
     else next.delete(key);
     setSearchParams(next);
   };
 
-  const filteredCards = useMemo(() => {
+  // 各カードの最高買取額（都道府県で絞り込んだ範囲内）を求め、高い順に並べる
+  const sortedCards = useMemo(() => {
     const q = searchText.trim();
-    return cards.filter((c) => {
-      const matchesQuery = !q || c.cardName.includes(q) || c.modelNumber.includes(q);
-      const matchesGame = !game || c.game === game;
-      return matchesQuery && matchesGame;
-    });
-  }, [searchText, game]);
+    return cards
+      .filter((c) => !q || c.cardName.includes(q) || c.modelNumber.includes(q))
+      .map((card) => {
+        const entries = priceEntriesForCard(card.id, prefecture || undefined);
+        return { card, entries, topPrice: entries[0]?.priceData.price ?? -1 };
+      })
+      .sort((a, b) => b.topPrice - a.topPrice);
+  }, [searchText, prefecture]);
 
   const queryString = (cardId: string) => {
     const params = new URLSearchParams();
@@ -48,18 +50,6 @@ export default function CardListPage() {
           onChange={(e) => setSearchText(e.target.value)}
         />
         <select
-          aria-label="タイトルで絞り込み"
-          value={game}
-          onChange={(e) => updateParam("game", e.target.value)}
-        >
-          <option value="">すべてのタイトル</option>
-          {games.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
-        <select
           aria-label="都道府県で絞り込み"
           value={prefecture}
           onChange={(e) => updateParam("prefecture", e.target.value)}
@@ -74,8 +64,7 @@ export default function CardListPage() {
       </div>
 
       <ul className="card-list">
-        {filteredCards.map((card) => {
-          const entries = priceEntriesForCard(card.id, prefecture || undefined);
+        {sortedCards.map(({ card, entries }) => {
           const diff = maxPriceDifference(card.id, prefecture || undefined);
           return (
             <li key={card.id}>
@@ -93,7 +82,7 @@ export default function CardListPage() {
                   <div>
                     <span className="card-name">{card.cardName}</span>
                     <span className="card-meta">
-                      {card.game} ・ {card.modelNumber} ・ {card.rarity}
+                      {card.modelNumber} ・ {card.rarity}
                     </span>
                     <a
                       href={mercariSearchUrl(`${card.cardName} ${card.modelNumber}`)}
@@ -146,7 +135,7 @@ export default function CardListPage() {
             </li>
           );
         })}
-        {filteredCards.length === 0 && (
+        {sortedCards.length === 0 && (
           <li className="empty-state">該当するカードが見つかりません</li>
         )}
       </ul>

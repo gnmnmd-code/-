@@ -5,7 +5,7 @@ import L, { latLngBounds } from "leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import { cards, games, prefectures, priceEntriesForCard } from "../data/mockData";
+import { cards, prefectures, priceEntriesForCard } from "../data/mockData";
 import { formatUpdatedAt, formatYen } from "../utils/format";
 
 // Vite/webpack環境でLeafletのデフォルトアイコンが表示されない問題の対処
@@ -57,12 +57,7 @@ function MapViewUpdater({ positions }: { positions: [number, number][] }) {
 
 export default function ShopMapPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const game = searchParams.get("game") ?? "";
-  const cardsForGame = useMemo(
-    () => (game ? cards.filter((c) => c.game === game) : cards),
-    [game]
-  );
-  const cardId = searchParams.get("cardId") ?? cardsForGame[0]?.id ?? cards[0].id;
+  const cardId = searchParams.get("cardId") ?? cards[0].id;
   const prefecture = searchParams.get("prefecture") ?? "";
 
   const entries = useMemo(
@@ -75,39 +70,15 @@ export default function ShopMapPage() {
     [entries]
   );
 
-  const updateParam = (key: "cardId" | "prefecture" | "game", value: string) => {
+  const updateParam = (key: "cardId" | "prefecture", value: string) => {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value);
     else next.delete(key);
-
-    // タイトルを切り替えたとき、選択中のカードが別タイトルのものなら先頭のカードに差し替える
-    if (key === "game") {
-      const nextCards = value ? cards.filter((c) => c.game === value) : cards;
-      if (!nextCards.some((c) => c.id === cardId) && nextCards[0]) {
-        next.set("cardId", nextCards[0].id);
-      }
-    }
-
     setSearchParams(next);
   };
 
   return (
     <div className="page map-page">
-      <div className="map-controls">
-        <label htmlFor="game-select">タイトル：</label>
-        <select
-          id="game-select"
-          value={game}
-          onChange={(e) => updateParam("game", e.target.value)}
-        >
-          <option value="">すべてのタイトル</option>
-          {games.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="map-controls">
         <label htmlFor="card-select">カード：</label>
         <select
@@ -115,7 +86,7 @@ export default function ShopMapPage() {
           value={cardId}
           onChange={(e) => updateParam("cardId", e.target.value)}
         >
-          {cardsForGame.map((c) => (
+          {cards.map((c) => (
             <option key={c.id} value={c.id}>
               {c.cardName}（{c.modelNumber}）
             </option>

@@ -20,6 +20,8 @@ export interface Shop {
   latitude: number;
   longitude: number;
   businessHours: string;
+  /** 店舗の公式サイト・公式X等（実在が確認できる場合のみ設定） */
+  websiteUrl?: string;
 }
 
 // ある店舗における、あるカードの買取価格
@@ -29,6 +31,10 @@ export interface PriceData {
   shopId: string;
   price: number;
   updatedAt: string; // ISO 8601
+  /** この価格の掲載元ページ（実データが確認できる場合のみ設定）。最終確認はここを案内する */
+  sourceUrl?: string;
+  /** パラレル・収録商品違いなど、価格差の原因になりうる版の注記 */
+  printNote?: string;
 }
 
 // AI画像解析で抽出された1件分のデータ

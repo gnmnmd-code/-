@@ -6,7 +6,7 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { cards, games, prefectures, priceEntriesForCard } from "../data/mockData";
-import { formatYen } from "../utils/format";
+import { formatUpdatedAt, formatYen } from "../utils/format";
 
 // Vite/webpack環境でLeafletのデフォルトアイコンが表示されない問題の対処
 const defaultIcon = L.icon({
@@ -141,6 +141,9 @@ export default function ShopMapPage() {
       {entries.length === 0 && (
         <p className="empty-state">この都道府県の店舗データはありません</p>
       )}
+      <p className="disclaimer">
+        価格は目安です。パラレル/SP等の版違いで価格は大きく変わるため、最終判断は各店舗の公式サイトでご確認ください。
+      </p>
 
       <MapContainer
         center={JAPAN_CENTER}
@@ -161,8 +164,13 @@ export default function ShopMapPage() {
           >
             <Popup>
               <div className="popup-content">
-                <strong>{entry.shop.shopName}</strong>
-                {index === 0 && <span className="badge">最高額</span>}
+                <div className="popup-header">
+                  <img src={selectedCard.imageUrl} alt={selectedCard.cardName} className="popup-thumb" />
+                  <div>
+                    <strong>{entry.shop.shopName}</strong>
+                    {index === 0 && <span className="badge">最高額</span>}
+                  </div>
+                </div>
                 <p>
                   {entry.shop.prefecture} ・ 営業時間: {entry.shop.businessHours}
                 </p>
@@ -170,14 +178,27 @@ export default function ShopMapPage() {
                   {selectedCard.cardName} の買取価格:{" "}
                   <strong>{formatYen(entry.priceData.price)}</strong>
                 </p>
-                <a
-                  href={directionsUrl(entry.shop.latitude, entry.shop.longitude)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="directions-button"
-                >
-                  マップアプリでルート案内を開く
-                </a>
+                <p className="updated-at">{formatUpdatedAt(entry.priceData.updatedAt)}</p>
+                <div className="popup-actions">
+                  <a
+                    href={directionsUrl(entry.shop.latitude, entry.shop.longitude)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="directions-button"
+                  >
+                    ルート案内を開く
+                  </a>
+                  {(entry.priceData.sourceUrl ?? entry.shop.websiteUrl) && (
+                    <a
+                      href={entry.priceData.sourceUrl ?? entry.shop.websiteUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="source-link"
+                    >
+                      公式サイトはこちら
+                    </a>
+                  )}
+                </div>
               </div>
             </Popup>
           </Marker>

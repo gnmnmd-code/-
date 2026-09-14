@@ -135,15 +135,32 @@ main {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 14px;
+  cursor: pointer;
 }
 
 .card-row-header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 8px;
+}
+
+.card-thumb {
+  width: 44px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.card-row-header .card-name {
+  display: block;
+}
+
+.card-row-header .card-meta {
+  display: block;
 }
 
 .card-name {
@@ -167,19 +184,59 @@ main {
 
 .price-entry {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 2px;
   font-size: 14px;
+  padding: 4px 0;
 }
 
-.price-entry .shop-name {
+.price-entry + .price-entry {
+  border-top: 1px solid var(--border);
+}
+
+.price-entry-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-entry-main .shop-name {
   flex: 1;
+}
+
+.price-entry-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
 }
 
 .price-entry .price,
 .price-table .price {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+}
+
+.source-link {
+  color: var(--accent) !important;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.disclaimer {
+  font-size: 12px;
+  opacity: 0.75;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.print-note {
+  margin: 2px 0 0;
+  font-size: 11px;
+  opacity: 0.7;
 }
 
 .badge {
@@ -293,7 +350,27 @@ main {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 180px;
+  min-width: 200px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-thumb {
+  width: 36px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 6px;
 }
 
 .directions-button {
@@ -306,6 +383,21 @@ main {
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
+  flex: 1;
+}
+
+.popup-actions .source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--accent);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none !important;
+  flex: 1;
 }
 
 .marker-best {

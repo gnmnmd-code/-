@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { cards, games, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
-import { formatYen } from "../utils/format";
+import { formatUpdatedAt, formatYen } from "../utils/format";
 
 export default function CardListPage() {
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const prefecture = searchParams.get("prefecture") ?? "";
@@ -34,6 +35,10 @@ export default function CardListPage() {
 
   return (
     <div className="page">
+      <p className="disclaimer">
+        価格は目安です。パラレル/SP等の版違いで価格は大きく変わるため、最終判断は各店舗の公式サイトでご確認ください。
+      </p>
+
       <div className="filters">
         <input
           type="text"
@@ -73,12 +78,23 @@ export default function CardListPage() {
           const diff = maxPriceDifference(card.id, prefecture || undefined);
           return (
             <li key={card.id}>
-              <Link to={queryString(card.id)} className="card-row">
+              <div
+                className="card-row"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(queryString(card.id))}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") navigate(queryString(card.id));
+                }}
+              >
                 <div className="card-row-header">
-                  <span className="card-name">{card.cardName}</span>
-                  <span className="card-meta">
-                    {card.game} ・ {card.modelNumber} ・ {card.rarity}
-                  </span>
+                  <img src={card.imageUrl} alt={card.cardName} className="card-thumb" loading="lazy" />
+                  <div>
+                    <span className="card-name">{card.cardName}</span>
+                    <span className="card-meta">
+                      {card.game} ・ {card.modelNumber} ・ {card.rarity}
+                    </span>
+                  </div>
                 </div>
 
                 {entries.length === 0 ? (
@@ -88,9 +104,25 @@ export default function CardListPage() {
                     <div className="price-entries">
                       {entries.map((entry, index) => (
                         <div className="price-entry" key={entry.shop.id}>
-                          <span className="shop-name">{entry.shop.shopName}</span>
-                          {index === 0 && <span className="badge">最高額</span>}
-                          <span className="price">{formatYen(entry.priceData.price)}</span>
+                          <div className="price-entry-main">
+                            <span className="shop-name">{entry.shop.shopName}</span>
+                            {index === 0 && <span className="badge">最高額</span>}
+                            <span className="price">{formatYen(entry.priceData.price)}</span>
+                          </div>
+                          <div className="price-entry-sub">
+                            <span className="updated-at">{formatUpdatedAt(entry.priceData.updatedAt)}</span>
+                            {(entry.priceData.sourceUrl ?? entry.shop.websiteUrl) && (
+                              <a
+                                href={entry.priceData.sourceUrl ?? entry.shop.websiteUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="source-link"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                公式サイトはこちら
+                              </a>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -100,7 +132,7 @@ export default function CardListPage() {
                     </div>
                   </>
                 )}
-              </Link>
+              </div>
             </li>
           );
         })}

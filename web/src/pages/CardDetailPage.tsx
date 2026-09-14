@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { cardById, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
-import { formatYen } from "../utils/format";
+import { formatUpdatedAt, formatYen } from "../utils/format";
 
 export default function CardDetailPage() {
   const { cardId } = useParams<{ cardId: string }>();
@@ -59,6 +59,9 @@ export default function CardDetailPage() {
       </div>
 
       <h3>店舗別 買取価格</h3>
+      <p className="disclaimer">
+        価格は目安です。パラレル/SP等の版違いで価格は大きく変わるため、最終判断は各店舗の公式サイトでご確認ください。
+      </p>
       {entries.length === 0 ? (
         <p className="empty-state">この都道府県の店舗データはありません</p>
       ) : (
@@ -67,22 +70,36 @@ export default function CardDetailPage() {
             <tr>
               <th>店舗</th>
               <th>買取価格</th>
-              <th>更新日時</th>
+              <th>更新日</th>
+              <th>公式サイト</th>
             </tr>
           </thead>
           <tbody>
-            {entries.map((entry, index) => (
-              <tr key={entry.shop.id}>
-                <td>
-                  {entry.shop.shopName}
-                  {index === 0 && <span className="badge">最高額</span>}
-                </td>
-                <td className="price">{formatYen(entry.priceData.price)}</td>
-                <td className="updated-at">
-                  {new Date(entry.priceData.updatedAt).toLocaleString("ja-JP")}
-                </td>
-              </tr>
-            ))}
+            {entries.map((entry, index) => {
+              const link = entry.priceData.sourceUrl ?? entry.shop.websiteUrl;
+              return (
+                <tr key={entry.shop.id}>
+                  <td>
+                    {entry.shop.shopName}
+                    {index === 0 && <span className="badge">最高額</span>}
+                    {entry.priceData.printNote && (
+                      <p className="print-note">{entry.priceData.printNote}</p>
+                    )}
+                  </td>
+                  <td className="price">{formatYen(entry.priceData.price)}</td>
+                  <td className="updated-at">{formatUpdatedAt(entry.priceData.updatedAt)}</td>
+                  <td>
+                    {link ? (
+                      <a href={link} target="_blank" rel="noreferrer" className="source-link">
+                        公式サイトはこちら
+                      </a>
+                    ) : (
+                      <span className="hint">—</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

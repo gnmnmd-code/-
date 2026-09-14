@@ -181,30 +181,48 @@ export const shops: Shop[] = [
     longitude: 139.5798,
     businessHours: "要問い合わせ（Xの投稿をご確認ください）",
   },
+  {
+    id: "shop-g",
+    // 実店舗を持つ「カードラッシュ」の公式買取価格ページ(cardrush.media)から取得した実データ
+    shopName: "カードラッシュ秋葉原0号店",
+    address: "東京都千代田区外神田1-18-18 Bito Akiba Plaza 7F",
+    prefecture: "東京都",
+    latitude: 35.6999,
+    longitude: 139.771,
+    businessHours: "平日13:00〜21:00、土日祝11:00〜21:00",
+  },
 ];
 
 // --- 買取価格データ ---
+// ONE PIECEカードゲームの価格は、カードラッシュ(shop-g)の実データ
+// （ルフィ ¥100／シャンクス illust:otton版 ¥10,000。cardrush.media より取得）を基準に、
+// 他店舗も現実的なレンジになるよう揃えている（shop-g以外は引き続き演出用のダミー値）。
+// ベタベットン流星(OP05-039)はカードラッシュ・遊々亭のいずれにも買取価格の掲載がなかった
+// （買取対象外の可能性があるため、実データでの裏付けが取れていない）。
 export const priceDataList: PriceData[] = [
-  // モンキー・D・ルフィ (OP05-119)
-  { id: "price-1", cardId: "card-luffy", shopId: "shop-a", price: 1_600_000, updatedAt: "2026-09-13T10:00:00+09:00" },
-  { id: "price-2", cardId: "card-luffy", shopId: "shop-b", price: 1_450_000, updatedAt: "2026-09-13T09:30:00+09:00" },
-  { id: "price-3", cardId: "card-luffy", shopId: "shop-c", price: 1_800_000, updatedAt: "2026-09-14T08:00:00+09:00" },
-  { id: "price-10", cardId: "card-luffy", shopId: "shop-d", price: 1_700_000, updatedAt: "2026-09-13T15:00:00+09:00" },
-  { id: "price-11", cardId: "card-luffy", shopId: "shop-e", price: 1_550_000, updatedAt: "2026-09-12T11:00:00+09:00" },
+  // モンキー・D・ルフィ (OP05-119 SEC)
+  { id: "price-1", cardId: "card-luffy", shopId: "shop-a", price: 80, updatedAt: "2026-09-13T10:00:00+09:00" },
+  { id: "price-2", cardId: "card-luffy", shopId: "shop-b", price: 120, updatedAt: "2026-09-13T09:30:00+09:00" },
+  { id: "price-3", cardId: "card-luffy", shopId: "shop-c", price: 150, updatedAt: "2026-09-14T08:00:00+09:00" },
+  { id: "price-10", cardId: "card-luffy", shopId: "shop-d", price: 90, updatedAt: "2026-09-13T15:00:00+09:00" },
+  { id: "price-11", cardId: "card-luffy", shopId: "shop-e", price: 70, updatedAt: "2026-09-12T11:00:00+09:00" },
+  { id: "price-26", cardId: "card-luffy", shopId: "shop-g", price: 100, updatedAt: "2026-09-14T12:00:00+09:00" },
 
-  // ベタベットン流星 (OP05-039)
+  // ベタベットン流星 (OP05-039、実データでの裏付けなし・演出用ダミー値)
   { id: "price-4", cardId: "card-betabetton", shopId: "shop-a", price: 8_000, updatedAt: "2026-09-12T18:00:00+09:00" },
   { id: "price-5", cardId: "card-betabetton", shopId: "shop-b", price: 12_000, updatedAt: "2026-09-14T07:15:00+09:00" },
   { id: "price-6", cardId: "card-betabetton", shopId: "shop-c", price: 9_500, updatedAt: "2026-09-13T21:00:00+09:00" },
   { id: "price-12", cardId: "card-betabetton", shopId: "shop-d", price: 10_500, updatedAt: "2026-09-13T16:30:00+09:00" },
   { id: "price-13", cardId: "card-betabetton", shopId: "shop-e", price: 7_000, updatedAt: "2026-09-11T13:00:00+09:00" },
 
-  // シャンクス (OP09-001 リーダー)
-  { id: "price-7", cardId: "card-shanks", shopId: "shop-a", price: 3_000, updatedAt: "2026-09-14T09:00:00+09:00" },
-  { id: "price-8", cardId: "card-shanks", shopId: "shop-b", price: 2_200, updatedAt: "2026-09-11T12:00:00+09:00" },
-  { id: "price-9", cardId: "card-shanks", shopId: "shop-c", price: 4_500, updatedAt: "2026-09-14T08:45:00+09:00" },
-  { id: "price-14", cardId: "card-shanks", shopId: "shop-d", price: 3_800, updatedAt: "2026-09-13T17:00:00+09:00" },
-  { id: "price-15", cardId: "card-shanks", shopId: "shop-e", price: 2_600, updatedAt: "2026-09-12T14:00:00+09:00" },
+  // シャンクス (OP09-001 L)
+  { id: "price-7", cardId: "card-shanks", shopId: "shop-a", price: 8_000, updatedAt: "2026-09-14T09:00:00+09:00" },
+  { id: "price-8", cardId: "card-shanks", shopId: "shop-b", price: 6_500, updatedAt: "2026-09-11T12:00:00+09:00" },
+  { id: "price-9", cardId: "card-shanks", shopId: "shop-c", price: 12_000, updatedAt: "2026-09-14T08:45:00+09:00" },
+  { id: "price-14", cardId: "card-shanks", shopId: "shop-d", price: 9_000, updatedAt: "2026-09-13T17:00:00+09:00" },
+  { id: "price-15", cardId: "card-shanks", shopId: "shop-e", price: 7_500, updatedAt: "2026-09-12T14:00:00+09:00" },
+  // カードラッシュの実データはillust:otton版。同じ型番でもillust:DAI-XT.版は¥100と大きく異なる（別カードとして要検討）
+  { id: "price-27", cardId: "card-shanks", shopId: "shop-g", price: 10_000, updatedAt: "2026-09-14T12:00:00+09:00" },
 
   // ポケモンカード：バトロコ吉祥寺駅前の買取表(2026/09/14更新版)より
   { id: "price-16", cardId: "card-mega-charizard-x-ex", shopId: "shop-f", price: 82_000, updatedAt: "2026-09-14T12:00:00+09:00" },

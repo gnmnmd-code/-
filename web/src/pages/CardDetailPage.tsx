@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { cardById, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
+import { mercariSearchUrl } from "../config/mercari";
 import { formatUpdatedAt, formatYen } from "../utils/format";
 
 export default function CardDetailPage() {
@@ -104,12 +105,22 @@ export default function CardDetailPage() {
         </table>
       )}
 
-      <Link
-        to={`/map?cardId=${card.id}${prefecture ? `&prefecture=${prefecture}` : ""}`}
-        className="map-link-button"
-      >
-        この価格で店舗を地図で見る
-      </Link>
+      <div className="action-buttons">
+        <Link
+          to={`/map?cardId=${card.id}${prefecture ? `&prefecture=${prefecture}` : ""}`}
+          className="map-link-button"
+        >
+          この価格で店舗を地図で見る
+        </Link>
+        <a
+          href={mercariSearchUrl(`${card.cardName} ${card.modelNumber}`)}
+          target="_blank"
+          rel="noreferrer"
+          className="mercari-link-button"
+        >
+          メルカリの相場を見る
+        </a>
+      </div>
     </div>
   );
 }

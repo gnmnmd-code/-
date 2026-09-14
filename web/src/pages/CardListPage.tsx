@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { cards, games, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
+import { mercariSearchUrl } from "../config/mercari";
 import { formatUpdatedAt, formatYen } from "../utils/format";
 
 export default function CardListPage() {
@@ -94,6 +95,15 @@ export default function CardListPage() {
                     <span className="card-meta">
                       {card.game} ・ {card.modelNumber} ・ {card.rarity}
                     </span>
+                    <a
+                      href={mercariSearchUrl(`${card.cardName} ${card.modelNumber}`)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mercari-inline-link"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      メルカリの相場を見る
+                    </a>
                   </div>
                 </div>
 

@@ -318,15 +318,39 @@ main {
   opacity: 0.7;
 }
 
-.map-link-button {
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-link-button,
+.mercari-link-button {
   display: inline-block;
   text-align: center;
-  background: var(--accent);
-  color: #fff;
   text-decoration: none;
   padding: 12px;
   border-radius: 8px;
   font-weight: 600;
+}
+
+.map-link-button {
+  background: var(--accent);
+  color: #fff;
+}
+
+.mercari-link-button {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.mercari-inline-link {
+  display: block;
+  font-size: 11px;
+  color: var(--accent) !important;
+  text-decoration: underline;
+  margin-top: 2px;
 }
 
 .map-page .map-controls {

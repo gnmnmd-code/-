@@ -79,6 +79,130 @@ export const cards: Card[] = [
     imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/PRB01-02_116.jpg",
   },
 
+  // 以下は実店舗「アキバカードショップ メルカード」の買取価格表ページ
+  // （https://akihabara-cardshop.com/onepice-kaitori/）から取得したサンプル。
+  // カード名・型番・レアリティ・買取価格・商品画像とも同ページの掲載データをそのまま使用している。
+  {
+    id: "card-kizaru",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ボルサリーノ",
+    modelNumber: "EB04-058",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/EB04/58.png",
+  },
+  {
+    id: "card-blackbeard",
+    game: "ONE PIECEカードゲーム",
+    cardName: "マーシャル・Ｄ・ティーチ",
+    modelNumber: "OP16-119",
+    rarity: "SEC",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP16/119.png",
+  },
+  {
+    id: "card-zoro",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ロロノア・ゾロ",
+    modelNumber: "EB04-007",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/EB04/7.png",
+  },
+  {
+    id: "card-ace",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ポートガス・D・エース",
+    modelNumber: "OP16-118",
+    rarity: "SEC",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP16/118.png",
+  },
+  {
+    id: "card-moria",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ゲッコー・モリア",
+    modelNumber: "OP14-104",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP14/OP14-104.png",
+  },
+  {
+    id: "card-luffy-leader-st01",
+    game: "ONE PIECEカードゲーム",
+    cardName: "モンキー・D・ルフィ",
+    modelNumber: "ST01-001",
+    rarity: "L",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/wanpiTD1-5/1.png",
+  },
+  {
+    id: "card-crocodile",
+    game: "ONE PIECEカードゲーム",
+    cardName: "クロコダイル",
+    modelNumber: "OP14-120",
+    rarity: "SEC",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP14/OP14-120.png",
+  },
+  {
+    id: "card-chopper",
+    game: "ONE PIECEカードゲーム",
+    cardName: "トニートニー・チョッパー",
+    modelNumber: "EB01-006",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/20240124_0aa85e.png",
+  },
+  {
+    id: "card-roger",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ゴール・D・ロジャー",
+    modelNumber: "OP09-118",
+    rarity: "SEC",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP09/OP09-118.jpg",
+  },
+  {
+    id: "card-nami",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ナミ",
+    modelNumber: "EB03-053",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/EB03/EB03-053.png",
+  },
+  {
+    id: "card-oden",
+    game: "ONE PIECEカードゲーム",
+    cardName: "光月おでん",
+    modelNumber: "ST32-002",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/ST32/2.png",
+  },
+  {
+    id: "card-luffy-sr-op17",
+    game: "ONE PIECEカードゲーム",
+    cardName: "モンキー・D・ルフィ",
+    modelNumber: "OP17-093",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP17/93.png",
+  },
+  {
+    id: "card-shanks-sr-op17",
+    game: "ONE PIECEカードゲーム",
+    cardName: "シャンクス",
+    modelNumber: "OP17-022",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP17/22.png",
+  },
+  {
+    id: "card-mihawk",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ジュラキュール・ミホーク",
+    modelNumber: "OP14-119",
+    rarity: "SEC",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/OP14/OP14-119.png",
+  },
+  {
+    id: "card-uta",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ウタ",
+    modelNumber: "ST23-001",
+    rarity: "SR",
+    imageUrl: "https://akihabara-cardshop.com/wp-content/themes/wp/img/product/ST23/2.png",
+  },
+
   // ポケモンカード
   // 「バトロコ吉祥寺駅前」がXに投稿した買取表(2026/09/14更新版)から抽出したサンプル。
   // メガリザードンXexの型番は買取表では一部が隠れていたため、
@@ -319,6 +443,17 @@ export const shops: Shop[] = [
     businessHours: "平日13:00〜21:00、土日祝11:00〜21:00",
     websiteUrl: "https://www.cardrush-op.jp/page/12",
   },
+  {
+    id: "shop-h",
+    // 実店舗。公式買取価格表ページから住所・営業時間を取得
+    shopName: "アキバカードショップ メルカード",
+    address: "東京都千代田区外神田1丁目8-7 神林ビル2階",
+    prefecture: "東京都",
+    latitude: 35.7002,
+    longitude: 139.7714,
+    businessHours: "平日13:00〜20:00、土日祝11:00〜20:00",
+    websiteUrl: "https://akihabara-cardshop.com/onepice-kaitori/",
+  },
 ];
 
 // --- 買取価格データ ---
@@ -413,6 +548,24 @@ export const priceDataList: PriceData[] = [
     sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-007",
     printNote: "パラレル/illust:otton版の価格",
   },
+
+  // 以下はアキバカードショップ メルカード(shop-h)の実データ
+  // （https://akihabara-cardshop.com/onepice-kaitori/ より）
+  { id: "price-43", cardId: "card-kizaru", shopId: "shop-h", price: 5_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-44", cardId: "card-blackbeard", shopId: "shop-h", price: 3_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-45", cardId: "card-zoro", shopId: "shop-h", price: 2_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-46", cardId: "card-ace", shopId: "shop-h", price: 1_400, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-47", cardId: "card-moria", shopId: "shop-h", price: 800, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-48", cardId: "card-luffy-leader-st01", shopId: "shop-h", price: 500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-49", cardId: "card-crocodile", shopId: "shop-h", price: 500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-50", cardId: "card-chopper", shopId: "shop-h", price: 400, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-51", cardId: "card-roger", shopId: "shop-h", price: 350, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-52", cardId: "card-nami", shopId: "shop-h", price: 300, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-53", cardId: "card-oden", shopId: "shop-h", price: 500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-54", cardId: "card-luffy-sr-op17", shopId: "shop-h", price: 500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-55", cardId: "card-shanks-sr-op17", shopId: "shop-h", price: 450, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-56", cardId: "card-mihawk", shopId: "shop-h", price: 350, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
+  { id: "price-57", cardId: "card-uta", shopId: "shop-h", price: 350, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://akihabara-cardshop.com/onepice-kaitori/" },
 
   // ポケモンカード：バトロコ吉祥寺駅前の買取表(2026/09/14更新版・X投稿)より
   { id: "price-16", cardId: "card-mega-charizard-x-ex", shopId: "shop-f", price: 82_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },

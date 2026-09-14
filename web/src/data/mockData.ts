@@ -35,7 +35,7 @@ export const cards: Card[] = [
   },
 
   // ポケモンカード
-  // 「パトロコ吉祥寺駅前」がXに投稿した買取表(2026/09/14更新版)から抽出したサンプル。
+  // 「バトロコ吉祥寺駅前」がXに投稿した買取表(2026/09/14更新版)から抽出したサンプル。
   // メガリザードンXexの型番は買取表では一部が隠れていたため、
   // カードショップDBと突き合わせて正しい型番(110/080)に補正している。
   {
@@ -174,7 +174,7 @@ export const shops: Shop[] = [
   {
     id: "shop-f",
     // X(旧Twitter)の買取表投稿から取得した実店舗
-    shopName: "パトロコ吉祥寺駅前",
+    shopName: "バトロコ吉祥寺駅前",
     address: "東京都武蔵野市吉祥寺本町（吉祥寺駅前）",
     prefecture: "東京都",
     latitude: 35.7031,
@@ -206,7 +206,7 @@ export const priceDataList: PriceData[] = [
   { id: "price-14", cardId: "card-shanks", shopId: "shop-d", price: 3_800, updatedAt: "2026-09-13T17:00:00+09:00" },
   { id: "price-15", cardId: "card-shanks", shopId: "shop-e", price: 2_600, updatedAt: "2026-09-12T14:00:00+09:00" },
 
-  // ポケモンカード：パトロコ吉祥寺駅前の買取表(2026/09/14更新版)より
+  // ポケモンカード：バトロコ吉祥寺駅前の買取表(2026/09/14更新版)より
   { id: "price-16", cardId: "card-mega-charizard-x-ex", shopId: "shop-f", price: 82_000, updatedAt: "2026-09-14T12:00:00+09:00" },
   { id: "price-17", cardId: "card-pikachu-ex", shopId: "shop-f", price: 68_000, updatedAt: "2026-09-14T12:00:00+09:00" },
   { id: "price-18", cardId: "card-zekrom-ex", shopId: "shop-f", price: 56_000, updatedAt: "2026-09-14T12:00:00+09:00" },

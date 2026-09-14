@@ -1,0 +1,71 @@
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { cardById, maxPriceDifference, priceEntriesForCard } from "../data/mockData";
+import { formatYen } from "../utils/format";
+
+export default function CardDetailPage() {
+  const { cardId } = useParams<{ cardId: string }>();
+  const navigate = useNavigate();
+  const card = cardId ? cardById(cardId) : undefined;
+
+  if (!card) {
+    return (
+      <div className="page">
+        <p>カードが見つかりませんでした。</p>
+        <Link to="/">一覧に戻る</Link>
+      </div>
+    );
+  }
+
+  const entries = priceEntriesForCard(card.id);
+  const diff = maxPriceDifference(card.id);
+
+  return (
+    <div className="page">
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← 戻る
+      </button>
+
+      <div className="detail-header">
+        <img src={card.imageUrl} alt={card.cardName} className="card-image" />
+        <div>
+          <h2>{card.cardName}</h2>
+          <p className="card-meta">
+            {card.modelNumber} ・ {card.rarity}
+          </p>
+          <p className="diff-row">
+            最大差額 <span className="diff-amount">+{formatYen(diff)}</span>
+          </p>
+        </div>
+      </div>
+
+      <h3>店舗別 買取価格</h3>
+      <table className="price-table">
+        <thead>
+          <tr>
+            <th>店舗</th>
+            <th>買取価格</th>
+            <th>更新日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((entry, index) => (
+            <tr key={entry.shop.id}>
+              <td>
+                {entry.shop.shopName}
+                {index === 0 && <span className="badge">最高額</span>}
+              </td>
+              <td className="price">{formatYen(entry.priceData.price)}</td>
+              <td className="updated-at">
+                {new Date(entry.priceData.updatedAt).toLocaleString("ja-JP")}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <Link to={`/map?cardId=${card.id}`} className="map-link-button">
+        この価格で店舗を地図で見る
+      </Link>
+    </div>
+  );
+}

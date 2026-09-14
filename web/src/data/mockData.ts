@@ -34,9 +34,49 @@ export const cards: Card[] = [
     cardName: "シャンクス",
     modelNumber: "OP09-001",
     rarity: "L",
-    // カードラッシュの買取実データ(¥10,000)はillust:otton版だが、
-    // この商品画像は在庫があったillust:DAI-XT.版のもの（同じ型番・レアリティでもイラスト違いで価格が異なる例）
-    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/OP09_NOR_99.jpg",
+    // 買取実データ(¥10,000)と同じillust:otton版の商品画像に修正済み
+    // （同型番・同レアリティでもillust:DAI-XT.版は¥100と大きく異なるので要注意）
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/20250925_0585e6.jpg",
+  },
+  {
+    id: "card-kaido",
+    game: "ONE PIECEカードゲーム",
+    cardName: "カイドウ",
+    modelNumber: "OP05-118",
+    rarity: "SEC",
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/OP05_2.jpg",
+  },
+  {
+    id: "card-trafalgar-law",
+    game: "ONE PIECEカードゲーム",
+    cardName: "トラファルガー・ロー",
+    modelNumber: "OP05-069",
+    rarity: "SR",
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/OP05_51.jpg",
+  },
+  {
+    id: "card-koala",
+    game: "ONE PIECEカードゲーム",
+    cardName: "コアラ",
+    modelNumber: "OP05-006",
+    rarity: "SR",
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/20251023_c266ba.jpg",
+  },
+  {
+    id: "card-eustass-kid",
+    game: "ONE PIECEカードゲーム",
+    cardName: "ユースタス・キッド",
+    modelNumber: "OP05-074",
+    rarity: "SR",
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/PRB01-02_101.jpg",
+  },
+  {
+    id: "card-sabo",
+    game: "ONE PIECEカードゲーム",
+    cardName: "サボ",
+    modelNumber: "OP05-007",
+    rarity: "SR",
+    imageUrl: "https://www.cardrush-op.jp/data/cardrush-op/product/PRB01-02_116.jpg",
   },
 
   // ポケモンカード
@@ -124,6 +164,86 @@ export const cards: Card[] = [
     rarity: "SAR",
     imageUrl: "https://dorasuta.jp/contents/product/0/11_0000580963_0_0_bJa6fP.jpg",
   },
+  {
+    id: "card-reshiram-ex",
+    game: "ポケモンカード",
+    cardName: "レシラムex",
+    modelNumber: "174/086",
+    rarity: "BWR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000617229_0_0_BwcRkj.jpg",
+  },
+  {
+    id: "card-hibiki-hooh-ex",
+    game: "ポケモンカード",
+    cardName: "ヒビキのホウオウex",
+    modelNumber: "086/063",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000597784_0_0_xALjEc.jpg",
+  },
+  {
+    id: "card-latias-ex",
+    game: "ポケモンカード",
+    cardName: "ラティアスex",
+    modelNumber: "087/064",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000560939_0_0_iIXUYw.jpg",
+  },
+  {
+    id: "card-lillie-resolve",
+    game: "ポケモンカード",
+    cardName: "リーリエの決心",
+    modelNumber: "091/063",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000629458_0_0_fUWEyV.jpg",
+  },
+  {
+    id: "card-mega-darkrai-ex",
+    game: "ポケモンカード",
+    cardName: "メガダークライex",
+    modelNumber: "114/081",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000688099_0_0_oExfKb.jpg",
+  },
+  {
+    id: "card-hibiki-adventure",
+    game: "ポケモンカード",
+    cardName: "ヒビキの冒険",
+    modelNumber: "089/063",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000597787_0_0_H3nMIB.jpg",
+  },
+  {
+    id: "card-rocket-crobat-ex",
+    game: "ポケモンカード",
+    cardName: "ロケット団のクロバットex",
+    modelNumber: "127/098",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000605769_0_0_mFqlf0.jpg",
+  },
+  {
+    id: "card-touko",
+    game: "ポケモンカード",
+    cardName: "トウコ",
+    modelNumber: "173/086",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000617228_0_0_FmqL3A.jpg",
+  },
+  {
+    id: "card-bell-kindness",
+    game: "ポケモンカード",
+    cardName: "ベルのまごころ",
+    modelNumber: "097/071",
+    rarity: "SAR",
+    imageUrl: "https://buy.dorasuta.jp/contents/product/0/11_0000517444_0_0_A4xfgs.jpg",
+  },
+  {
+    id: "card-salamence-ex",
+    game: "ポケモンカード",
+    cardName: "ボーマンダex",
+    modelNumber: "129/100",
+    rarity: "SAR",
+    imageUrl: "https://dorasuta.jp/contents/product/0/11_0000588260_0_0_sGHCO9.jpg",
+  },
 ];
 
 // --- 都道府県（表示順はおおよそ北から南） ---
@@ -202,12 +322,12 @@ export const shops: Shop[] = [
 ];
 
 // --- 買取価格データ ---
-// ONE PIECEカードゲームの価格は、カードラッシュ(shop-g)の実データ
-// （ルフィ ¥100／シャンクス illust:otton版 ¥10,000。cardrush.media より取得）を基準に、
-// 他店舗も現実的なレンジになるよう揃えている（shop-g以外は引き続き演出用のダミー値で、
-// sourceUrlを持たない＝実データではないことを示す）。
-// ベタベットン流星(OP05-039)はカードラッシュ・遊々亭のいずれにも買取価格の掲載がなかった
-// （買取対象外の可能性があるため、実データでの裏付けが取れていない）。
+// ONE PIECEカードゲームの価格は、カードラッシュ(shop-g)の実データ（cardrush.media より取得）を基準に、
+// ルフィ・シャンクスは他店舗も現実的なレンジになるよう揃えている（shop-g以外は引き続き演出用のダミー値で、
+// sourceUrlを持たない＝実データではないことを示す）。カイドウ以降の5種は比較対象の他店データが無いため
+// カードラッシュの実データ1件のみ（最大差額は+0円になる）。
+// ベタベットン流星(OP05-039)はカードラッシュ・遊々亭のいずれにも個別の買取価格掲載がなかったため、
+// 他店相場調査（およそ¥20〜50）を参考にしたダミー値のまま。
 export const priceDataList: PriceData[] = [
   // モンキー・D・ルフィ (OP05-119 SEC)
   { id: "price-1", cardId: "card-luffy", shopId: "shop-a", price: 80, updatedAt: "2026-09-13T10:00:00+09:00" },
@@ -224,12 +344,13 @@ export const priceDataList: PriceData[] = [
     sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-119",
   },
 
-  // ベタベットン流星 (OP05-039、実データでの裏付けなし・演出用ダミー値)
-  { id: "price-4", cardId: "card-betabetton", shopId: "shop-a", price: 8_000, updatedAt: "2026-09-12T18:00:00+09:00" },
-  { id: "price-5", cardId: "card-betabetton", shopId: "shop-b", price: 12_000, updatedAt: "2026-09-14T07:15:00+09:00" },
-  { id: "price-6", cardId: "card-betabetton", shopId: "shop-c", price: 9_500, updatedAt: "2026-09-13T21:00:00+09:00" },
-  { id: "price-12", cardId: "card-betabetton", shopId: "shop-d", price: 10_500, updatedAt: "2026-09-13T16:30:00+09:00" },
-  { id: "price-13", cardId: "card-betabetton", shopId: "shop-e", price: 7_000, updatedAt: "2026-09-11T13:00:00+09:00" },
+  // ベタベットン流星 (OP05-039)。他店の買取相場調査では¥20〜50程度だったため、
+  // 各店の演出用ダミー値もそのレンジに合わせて修正（以前の¥7,000〜12,000は非現実的だった）
+  { id: "price-4", cardId: "card-betabetton", shopId: "shop-a", price: 20, updatedAt: "2026-09-12T18:00:00+09:00" },
+  { id: "price-5", cardId: "card-betabetton", shopId: "shop-b", price: 35, updatedAt: "2026-09-14T07:15:00+09:00" },
+  { id: "price-6", cardId: "card-betabetton", shopId: "shop-c", price: 50, updatedAt: "2026-09-13T21:00:00+09:00" },
+  { id: "price-12", cardId: "card-betabetton", shopId: "shop-d", price: 25, updatedAt: "2026-09-13T16:30:00+09:00" },
+  { id: "price-13", cardId: "card-betabetton", shopId: "shop-e", price: 15, updatedAt: "2026-09-11T13:00:00+09:00" },
 
   // シャンクス (OP09-001 L)
   { id: "price-7", cardId: "card-shanks", shopId: "shop-a", price: 8_000, updatedAt: "2026-09-14T09:00:00+09:00" },
@@ -247,6 +368,52 @@ export const priceDataList: PriceData[] = [
     printNote: "illust:otton版の価格（同型番・同レアリティでもillust:DAI-XT.版は¥100と大きく異なる）",
   },
 
+  // 以下はカードラッシュの実データのみ（他店の比較データが無いため最大差額は+0円になる）
+  {
+    id: "price-28",
+    cardId: "card-kaido",
+    shopId: "shop-g",
+    price: 180,
+    updatedAt: "2026-09-14T12:00:00+09:00",
+    sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-118",
+  },
+  {
+    id: "price-29",
+    cardId: "card-trafalgar-law",
+    shopId: "shop-g",
+    price: 10,
+    updatedAt: "2026-09-14T12:00:00+09:00",
+    sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-069",
+    printNote: "通常版(パラレルなし)の価格。漫画背景パラレル版は¥90,000超と大きく異なる",
+  },
+  {
+    id: "price-30",
+    cardId: "card-koala",
+    shopId: "shop-g",
+    price: 3_000,
+    updatedAt: "2026-09-14T12:00:00+09:00",
+    sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-006",
+    printNote: "illust:Koushi Rokushiro版の価格",
+  },
+  {
+    id: "price-31",
+    cardId: "card-eustass-kid",
+    shopId: "shop-g",
+    price: 300,
+    updatedAt: "2026-09-14T12:00:00+09:00",
+    sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-074",
+    printNote: "パラレル/illust:Ryuda版の価格。漫画背景パラレル版は¥70,000超と大きく異なる",
+  },
+  {
+    id: "price-32",
+    cardId: "card-sabo",
+    shopId: "shop-g",
+    price: 300,
+    updatedAt: "2026-09-14T12:00:00+09:00",
+    sourceUrl: "https://cardrush.media/onepiece/buying_prices?model_number=OP05-007",
+    printNote: "パラレル/illust:otton版の価格",
+  },
+
   // ポケモンカード：バトロコ吉祥寺駅前の買取表(2026/09/14更新版・X投稿)より
   { id: "price-16", cardId: "card-mega-charizard-x-ex", shopId: "shop-f", price: 82_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
   { id: "price-17", cardId: "card-pikachu-ex", shopId: "shop-f", price: 68_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
@@ -258,6 +425,16 @@ export const priceDataList: PriceData[] = [
   { id: "price-23", cardId: "card-boss-sakaki", shopId: "shop-f", price: 20_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
   { id: "price-24", cardId: "card-vaporeon-ex", shopId: "shop-f", price: 6_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
   { id: "price-25", cardId: "card-glaceon-ex", shopId: "shop-f", price: 6_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-33", cardId: "card-reshiram-ex", shopId: "shop-f", price: 50_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-34", cardId: "card-hibiki-hooh-ex", shopId: "shop-f", price: 26_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-35", cardId: "card-latias-ex", shopId: "shop-f", price: 22_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-36", cardId: "card-lillie-resolve", shopId: "shop-f", price: 20_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-37", cardId: "card-mega-darkrai-ex", shopId: "shop-f", price: 17_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-38", cardId: "card-hibiki-adventure", shopId: "shop-f", price: 5_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-39", cardId: "card-rocket-crobat-ex", shopId: "shop-f", price: 5_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-40", cardId: "card-touko", shopId: "shop-f", price: 4_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-41", cardId: "card-bell-kindness", shopId: "shop-f", price: 4_000, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
+  { id: "price-42", cardId: "card-salamence-ex", shopId: "shop-f", price: 3_500, updatedAt: "2026-09-14T12:00:00+09:00", sourceUrl: "https://x.com/batoloco_kjz" },
 ];
 
 export function shopById(id: string): Shop | undefined {

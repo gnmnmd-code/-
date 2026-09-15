@@ -1,6 +1,13 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { cards, maxPriceDifference, prefectures, priceEntriesForCard } from "../data/mockData";
+import {
+  availableSets,
+  cards,
+  maxPriceDifference,
+  prefectures,
+  priceEntriesForCard,
+  setCodeForModel,
+} from "../data/mockData";
 import { mercariSearchUrl } from "../config/mercari";
 import { formatUpdatedAt, formatYen } from "../utils/format";
 
@@ -9,8 +16,9 @@ export default function CardListPage() {
   const [searchText, setSearchText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const prefecture = searchParams.get("prefecture") ?? "";
+  const set = searchParams.get("set") ?? "";
 
-  const updateParam = (key: "prefecture", value: string) => {
+  const updateParam = (key: "prefecture" | "set", value: string) => {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value);
     else next.delete(key);
@@ -22,12 +30,13 @@ export default function CardListPage() {
     const q = searchText.trim();
     return cards
       .filter((c) => !q || c.cardName.includes(q) || c.modelNumber.includes(q))
+      .filter((c) => !set || setCodeForModel(c.modelNumber) === set)
       .map((card) => {
         const entries = priceEntriesForCard(card.id, prefecture || undefined);
         return { card, entries, topPrice: entries[0]?.priceData.price ?? -1 };
       })
       .sort((a, b) => b.topPrice - a.topPrice);
-  }, [searchText, prefecture]);
+  }, [searchText, prefecture, set]);
 
   const queryString = (cardId: string) => {
     const params = new URLSearchParams();
@@ -49,6 +58,14 @@ export default function CardListPage() {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
+        <select aria-label="パック/デッキで絞り込み" value={set} onChange={(e) => updateParam("set", e.target.value)}>
+          <option value="">すべてのパック/デッキ</option>
+          {availableSets.map((s) => (
+            <option key={s.code} value={s.code}>
+              {s.code}: {s.name}
+            </option>
+          ))}
+        </select>
         <select
           aria-label="都道府県で絞り込み"
           value={prefecture}

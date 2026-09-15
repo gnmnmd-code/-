@@ -1,5 +1,22 @@
 import type { Card, Shop, PriceData } from "../types";
 import generatedCards from "./onepiece-cards.generated.json";
+import setNamesJson from "./onepiece-sets.generated.json";
+
+// --- パック/スタートデッキ ---
+// 型番の頭（ハイフンの前）が収録パックを表す: OP〇〇=ブースターパック／ST〇〇=スタートデッキ／
+// EB〇〇=エクストラブースター／PRB〇〇=プレミアムブースター／P=プロモーションカード。
+// 名称は公式サイトのシリーズ一覧（scripts/fetch-onepiece-cards.mjs が生成）から取得したもの。
+const setNames: Record<string, string> = setNamesJson;
+
+export function setCodeForModel(modelNumber: string): string | null {
+  if (/^P-\d+$/.test(modelNumber)) return "P";
+  const m = modelNumber.match(/^([A-Za-z]+\d{2})-/);
+  return m ? m[1] : null;
+}
+
+export function setLabel(code: string): string {
+  return setNames[code] ?? code;
+}
 
 // --- カード ---
 // ONE PIECEカードゲームのみを扱う。カード名・型番・レアリティ・画像は、
@@ -119,6 +136,17 @@ const generatedPriceList: PriceData[] = (generatedCards as GeneratedCard[])
   }));
 
 export const cards: Card[] = [...curatedCards, ...generatedCardList];
+
+/** 実際にカードが1種類以上ある収録パック/デッキの一覧（コード順） */
+export const availableSets: { code: string; name: string }[] = [
+  ...new Set(
+    cards
+      .map((c) => setCodeForModel(c.modelNumber))
+      .filter((code): code is string => code !== null)
+  ),
+]
+  .sort()
+  .map((code) => ({ code, name: setLabel(code) }));
 
 // --- 都道府県（表示順はおおよそ北から南） ---
 export const prefectures = ["東京都", "愛知県", "大阪府"] as const;

@@ -18,6 +18,13 @@ export function setLabel(code: string): string {
   return setNames[code] ?? code;
 }
 
+/** "OP17" → ["OP", 17]、"P" → ["P", 0] */
+function splitSetCode(code: string): [string, number] {
+  const m = code.match(/^([A-Za-z]+)(\d*)$/);
+  if (!m) return [code, 0];
+  return [m[1], Number(m[2] || 0)];
+}
+
 // --- カード ---
 // ONE PIECEカードゲームのみを扱う。カード名・型番・レアリティ・画像は、
 // 公式サイトのカードリストページ（onepiece-cardgame.com/cardlist）、または
@@ -137,7 +144,10 @@ const generatedPriceList: PriceData[] = (generatedCards as GeneratedCard[])
 
 export const cards: Card[] = [...curatedCards, ...generatedCardList];
 
-/** 実際にカードが1種類以上ある収録パック/デッキの一覧（コード順） */
+/**
+ * 実際にカードが1種類以上ある収録パック/デッキの一覧。
+ * OP/ST/EB/PRB/P のグループごとにまとめ、グループ内は番号が大きい順（新しいパックが上）に並べる
+ */
 export const availableSets: { code: string; name: string }[] = [
   ...new Set(
     cards
@@ -145,7 +155,12 @@ export const availableSets: { code: string; name: string }[] = [
       .filter((code): code is string => code !== null)
   ),
 ]
-  .sort()
+  .sort((a, b) => {
+    const [letterA, numA] = splitSetCode(a);
+    const [letterB, numB] = splitSetCode(b);
+    if (letterA !== letterB) return letterA.localeCompare(letterB);
+    return numB - numA;
+  })
   .map((code) => ({ code, name: setLabel(code) }));
 
 // --- 都道府県（表示順はおおよそ北から南） ---

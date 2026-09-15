@@ -1,5 +1,6 @@
 import type { Card, Shop, PriceData } from "../types";
 import generatedCards from "./onepiece-cards.generated.json";
+import generatedPrices from "./onepiece-prices.generated.json";
 import setNamesJson from "./onepiece-sets.generated.json";
 
 // --- パック/スタートデッキ ---
@@ -38,11 +39,17 @@ interface GeneratedCard {
   rarity: string;
   /** パラレル版・SP版・プロモ再録版などの注記。通常版は null */
   variantLabel: string | null;
-  officialImageUrl: string;
-  mercardImageUrl: string;
-  price: number;
-  sourceUrl: string;
+  set: string | null;
+  imageUrl: string;
+}
+
+interface GeneratedPrice {
+  id: string;
+  cardId: string;
   shopId: string;
+  price: number;
+  updatedAt: string;
+  sourceUrl: string;
 }
 
 // 個別に手入力したカード（印刷違いでの価格差の解説や、複数店舗の比較デモなど、
@@ -117,8 +124,11 @@ const curatedCards: Card[] = [
 ];
 
 // --- 自動生成カード ---
-// scripts/fetch-onepiece-cards.mjs が公式サイト（全シリーズ）とメルカードの買取価格表を
-// 突き合わせて生成した onepiece-cards.generated.json を読み込む。
+// scripts/fetch-onepiece-cards.mjs が公式サイト（全シリーズ）と複数店舗（メルカード・遊々亭）の
+// 買取価格表を突き合わせて生成した onepiece-cards.generated.json / onepiece-prices.generated.json を
+// 読み込む。カードマスタと店舗別価格が分かれているのは、印刷違いの注記が無い「通常版」は
+// 型番だけで店舗横断に同一カードとして扱い、複数店舗の価格を1枚のカードとして比較できるようにするため
+// （パラレル版等は店舗ごとの表記のズレによる誤突合を避けるため、店舗ごとに別カードのまま）。
 // ルフィ(OP05-119)・カイドウ(OP05-118)・コアラ(OP05-006)の「通常版」は上記で個別に手入力済みのため
 // 除外するが、同じ型番でもパラレル版等（variantLabelあり）は別カードなので除外しない。
 const CURATED_BASE_MODELS = new Set(["OP05-119", "OP05-118", "OP05-006"]);
@@ -133,19 +143,20 @@ const generatedCardList: Card[] = (generatedCards as GeneratedCard[])
     modelNumber: c.model,
     rarity: c.rarity,
     variantLabel: c.variantLabel ?? undefined,
-    // メルカードの画像は買取価格と同じ商品ページのものなので、価格との対応がずれない
-    imageUrl: c.mercardImageUrl,
+    imageUrl: c.imageUrl,
   }));
 
-const generatedPriceList: PriceData[] = (generatedCards as GeneratedCard[])
-  .filter((c) => !isCuratedDuplicate(c))
-  .map((c) => ({
-    id: `price-${c.id}`,
-    cardId: c.id,
-    shopId: c.shopId,
-    price: c.price,
-    updatedAt: "2026-09-14T12:00:00+09:00",
-    sourceUrl: c.sourceUrl,
+const generatedCardIds = new Set(generatedCardList.map((c) => c.id));
+
+const generatedPriceList: PriceData[] = (generatedPrices as GeneratedPrice[])
+  .filter((p) => generatedCardIds.has(p.cardId))
+  .map((p) => ({
+    id: p.id,
+    cardId: p.cardId,
+    shopId: p.shopId,
+    price: p.price,
+    updatedAt: p.updatedAt,
+    sourceUrl: p.sourceUrl,
   }));
 
 export const cards: Card[] = [...curatedCards, ...generatedCardList];
@@ -241,6 +252,19 @@ export const shops: Shop[] = [
     longitude: 139.7714,
     businessHours: "平日13:00〜20:00、土日祝11:00〜20:00",
     websiteUrl: "https://akihabara-cardshop.com/onepice-kaitori/",
+  },
+  {
+    id: "shop-i",
+    // 運営: 株式会社スカラプレイス。特定商取引法に基づく表記ページの住所を使用。
+    // 同ページに「こちらは買取ご希望商品の送付先とは異なります」と明記されており、
+    // 来店買取ではなく宅配買取（カードを郵送して査定）が基本のオンライン専門店
+    shopName: "カードショップ 遊々亭",
+    address: "東京都千代田区外神田6丁目2-8 ビジネスプレイス外神田4F",
+    prefecture: "東京都",
+    latitude: 35.7031,
+    longitude: 139.7689,
+    businessHours: "宅配買取のみ（来店買取なし）",
+    websiteUrl: "https://yuyu-tei.jp/top/opc",
   },
 ];
 

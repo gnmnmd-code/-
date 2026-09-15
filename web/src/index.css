@@ -328,10 +328,6 @@ main {
   gap: 8px;
 }
 
-.card-grid.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .card-grid.grid-4 {
   grid-template-columns: repeat(4, 1fr);
 }

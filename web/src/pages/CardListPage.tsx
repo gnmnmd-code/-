@@ -118,15 +118,8 @@ export default function CardListPage() {
         </button>
         <button
           type="button"
-          className={viewMode === "grid3" ? "active" : ""}
-          onClick={() => changeViewMode("grid3")}
-        >
-          3列
-        </button>
-        <button
-          type="button"
-          className={viewMode === "grid4" ? "active" : ""}
-          onClick={() => changeViewMode("grid4")}
+          className={viewMode === "grid" ? "active" : ""}
+          onClick={() => changeViewMode("grid")}
         >
           4列
         </button>
@@ -211,7 +204,7 @@ export default function CardListPage() {
           )}
         </ul>
       ) : (
-        <ul className={`card-grid ${viewMode === "grid3" ? "grid-3" : "grid-4"}`}>
+        <ul className="card-grid grid-4">
           {sortedCards.map(({ card, entries, topPrice }) => (
             <li key={card.id}>
               <div

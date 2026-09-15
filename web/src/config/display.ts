@@ -1,7 +1,7 @@
 // カード一覧の表示形式（リスト/グリッド）と価格帯セグメントの共通設定。
 // CardListPage・ShopDetailPageの両方で使う。
 
-export type ViewMode = "list" | "grid3" | "grid4";
+export type ViewMode = "list" | "grid";
 
 const VIEW_MODE_STORAGE_KEY = "cardListViewMode";
 
@@ -9,7 +9,7 @@ const VIEW_MODE_STORAGE_KEY = "cardListViewMode";
 export function loadViewMode(): ViewMode {
   try {
     const saved = window.localStorage.getItem(VIEW_MODE_STORAGE_KEY);
-    return saved === "grid3" || saved === "grid4" ? saved : "list";
+    return saved === "grid" ? saved : "list";
   } catch {
     return "list";
   }

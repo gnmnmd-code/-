@@ -107,15 +107,8 @@ export default function ShopDetailPage() {
         </button>
         <button
           type="button"
-          className={viewMode === "grid3" ? "active" : ""}
-          onClick={() => changeViewMode("grid3")}
-        >
-          3列
-        </button>
-        <button
-          type="button"
-          className={viewMode === "grid4" ? "active" : ""}
-          onClick={() => changeViewMode("grid4")}
+          className={viewMode === "grid" ? "active" : ""}
+          onClick={() => changeViewMode("grid")}
         >
           4列
         </button>
@@ -146,7 +139,7 @@ export default function ShopDetailPage() {
           )}
         </ul>
       ) : (
-        <ul className={`card-grid ${viewMode === "grid3" ? "grid-3" : "grid-4"}`}>
+        <ul className="card-grid grid-4">
           {entries.map(({ card, priceData }) => (
             <li key={card.id}>
               <Link to={`/card/${card.id}`} className="card-grid-item">

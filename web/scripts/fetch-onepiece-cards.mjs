@@ -11,11 +11,15 @@
 //      カード名・型番・レアリティ・公式カード画像URLと、パック/デッキの正式名称を取得する。
 //   2. アキバカードショップ メルカード 買取価格表
 //      （https://akihabara-cardshop.com/onepice-kaitori/）
-//      型番・買取価格を取得する。
+//      型番・買取価格を取得する。メルカードの「型番」欄は、パラレル版などの印刷違いを
+//      「パラレル版OP05-118」「パラレル加工版OP05-118『PRB01』」のように、
+//      基本の型番の前後に説明文を付けて表す。
 //
 // 上記2つを型番で突き合わせ、「公式データで名前・型番・レアリティが確認でき、
 // かつ実店舗の買取価格が分かる」カードだけを出力する（価格の無いカードは
 // このアプリの性質上、比較のしようがないため除外する）。
+// パラレル版・SP版などの印刷違いは、同じ基本型番でも別カードとして扱う
+// （印刷違いで価格が大きく変わるため、`variantLabel` にその説明文を保持する）。
 //
 // 型番の頭（ハイフンの前）が、どのパック/スタートデッキ/プロモに収録されたカードかを表す:
 //   OP〇〇 = ブースターパック／ST〇〇 = スタートデッキ／EB〇〇 = エクストラブースター
@@ -25,6 +29,7 @@
 // 利用規約・robots.txtの範囲内で、頻繁に実行しすぎないこと（目安: 1日1回程度）。
 
 import { writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -97,22 +102,43 @@ function parseMercardPrices(html) {
     /<div class="td td1"><img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"><\/div>.*?<div class="td td2">([^<]*)<\/div>\s*<div class="td td3">.*?<\/span>([^<]*)<\/div>\s*<div class="td td4">.*?<\/span>([^<]*)<\/div>.*?<span class="price">(\d+)<\/span>/gs;
   const rows = [];
   for (const m of html.matchAll(pattern)) {
-    const [, img, , name, model, rarity, price] = m;
-    rows.push({ img, name: name.trim(), model: model.trim(), rarity: rarity.trim(), price: Number(price) });
+    const [, img, , name, model, type, price] = m;
+    // td4は実際にはカード種類（CHARACTER/LEADER/EVENT/STAGE）で、レアリティではない。
+    // レアリティは公式データ側（officialByModel）から取得する。
+    rows.push({ img, name: name.trim(), model: model.trim(), type: type.trim(), price: Number(price) });
   }
   return rows;
 }
 
-// 型番の形式が単純なもの（パラレル等の複雑な表記を除く）に限定する。
-// 例: OP05-119, ST23-001, EB04-058, PRB02-003, P-041 は対象。
-// SPOP05-098『EB02』のような表記は対象外。
-const CLEAN_MODEL = /^(OP\d{2}-\d{3}|ST\d{2}-\d{3}|EB\d{2}-\d{3}|PRB\d{2}-\d{3}|P-\d{3})$/;
+const BASE_MODEL = /(?:OP|ST|EB|PRB)\d{2}-\d{3}|P-\d{3}/;
+
+/**
+ * メルカードの「型番」欄を分解する。
+ * 例: "OP05-119" → { model: "OP05-119", variantLabel: null }
+ *     "パラレル版OP05-118" → { model: "OP05-118", variantLabel: "パラレル版" }
+ *     "パラレル加工版OP05-118『PRB01』" → { model: "OP05-118", variantLabel: "パラレル加工版『PRB01』" }
+ * パラレル版・SP版・プロモ再録版など、基本型番の前後に説明が付くケースをまとめて扱う。
+ */
+function parseModelField(raw) {
+  const m = raw.match(new RegExp(`^(.*?)(${BASE_MODEL.source})(?:『([^』]+)』)?$`));
+  if (!m) return null;
+  const [, prefix, model, pack] = m;
+  const label = prefix.trim();
+  const variantLabel = label ? (pack ? `${label}『${pack}』` : label) : pack ? `『${pack}』` : null;
+  return { model, variantLabel };
+}
 
 /** 型番からセットコードを取り出す。例: "OP05-119" → "OP05"、"P-041" → "P" */
 function setCodeForModel(model) {
   if (/^P-\d+$/.test(model)) return "P";
   const m = model.match(/^([A-Za-z]+\d{2})-/);
   return m ? m[1] : null;
+}
+
+function idFor(model, variantLabel) {
+  if (!variantLabel) return `card-gen-${model}`;
+  const hash = createHash("sha1").update(`${model}::${variantLabel}`).digest("hex").slice(0, 8);
+  return `card-gen-${model}-${hash}`;
 }
 
 async function main() {
@@ -143,37 +169,46 @@ async function main() {
   const mercardRows = parseMercardPrices(mercardHtml);
   console.log(`メルカード買取データ: ${mercardRows.length} 行`);
 
-  const mercardByModel = new Map();
+  // 型番＋印刷違い（パラレル版など）ごとに一意なキーで集約する。
+  // ページは価格の高い順なので、同じキーが複数あれば最初に出てきたもの（＝最高値）を採用。
+  const mercardByKey = new Map();
   for (const row of mercardRows) {
-    // ページは価格の高い順なので、最初に出てきたものを採用
-    if (CLEAN_MODEL.test(row.model) && !mercardByModel.has(row.model)) {
-      mercardByModel.set(row.model, row);
+    const parsed = parseModelField(row.model);
+    if (!parsed) continue; // どうしても型番を抜き出せない特殊な表記はスキップ
+    const key = `${parsed.model}::${parsed.variantLabel ?? ""}`;
+    if (!mercardByKey.has(key)) {
+      mercardByKey.set(key, { ...row, model: parsed.model, variantLabel: parsed.variantLabel });
     }
   }
-  console.log(`型番がシンプルな形式のもの: ${mercardByModel.size} 種`);
+  console.log(`型番を認識できたもの（パラレル版等の印刷違いを別カウント）: ${mercardByKey.size} 種`);
 
   const merged = [];
   const usedSetCodes = new Set();
-  for (const [model, mercardRow] of mercardByModel) {
-    const official = officialByModel.get(model);
+  for (const row of mercardByKey.values()) {
+    const official = officialByModel.get(row.model);
     if (!official) continue; // 公式データに無い（表記ゆれ等）ものはスキップ
-    const setCode = setCodeForModel(model);
+    const setCode = setCodeForModel(row.model);
     if (setCode) usedSetCodes.add(setCode);
     merged.push({
-      model,
+      id: idFor(row.model, row.variantLabel),
+      model: row.model,
       cardName: official.name,
       rarity: official.rarity,
+      variantLabel: row.variantLabel,
       set: setCode,
-      officialImageUrl: `https://www.onepiece-cardgame.com/images/cardlist/card/${model}.png`,
-      mercardImageUrl: mercardRow.img,
-      price: mercardRow.price,
+      officialImageUrl: `https://www.onepiece-cardgame.com/images/cardlist/card/${row.model}.png`,
+      mercardImageUrl: row.img,
+      price: row.price,
       sourceUrl: MERCARD_SOURCE_URL,
       shopId: MERCARD_SHOP_ID,
     });
   }
   merged.sort((a, b) => b.price - a.price);
 
-  console.log(`公式データと実買取価格の両方が確認できたカード: ${merged.length} 種`);
+  const parallelCount = merged.filter((c) => c.variantLabel).length;
+  console.log(
+    `公式データと実買取価格の両方が確認できたカード: ${merged.length} 種（うちパラレル/SP等の印刷違い: ${parallelCount} 種）`
+  );
 
   const setsOut = {};
   for (const code of [...usedSetCodes].sort()) {

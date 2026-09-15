@@ -32,9 +32,12 @@ function splitSetCode(code: string): [string, number] {
 // 画像はホットリンクのため、本番運用では各社の利用規約を確認のうえ、
 // 許諾を得た画像を自社サーバーに保存して配信することを推奨する。
 interface GeneratedCard {
+  id: string;
   model: string;
   cardName: string;
   rarity: string;
+  /** パラレル版・SP版・プロモ再録版などの注記。通常版は null */
+  variantLabel: string | null;
   officialImageUrl: string;
   mercardImageUrl: string;
   price: number;
@@ -116,26 +119,29 @@ const curatedCards: Card[] = [
 // --- 自動生成カード ---
 // scripts/fetch-onepiece-cards.mjs が公式サイト（全シリーズ）とメルカードの買取価格表を
 // 突き合わせて生成した onepiece-cards.generated.json を読み込む。
-// ルフィ(OP05-119)・カイドウ(OP05-118)・コアラ(OP05-006)は上記で個別に手入力済みのため除外する。
-const CURATED_MODELS = new Set(["OP05-119", "OP05-118", "OP05-006"]);
+// ルフィ(OP05-119)・カイドウ(OP05-118)・コアラ(OP05-006)の「通常版」は上記で個別に手入力済みのため
+// 除外するが、同じ型番でもパラレル版等（variantLabelあり）は別カードなので除外しない。
+const CURATED_BASE_MODELS = new Set(["OP05-119", "OP05-118", "OP05-006"]);
+const isCuratedDuplicate = (c: GeneratedCard) => CURATED_BASE_MODELS.has(c.model) && !c.variantLabel;
 
 const generatedCardList: Card[] = (generatedCards as GeneratedCard[])
-  .filter((c) => !CURATED_MODELS.has(c.model))
+  .filter((c) => !isCuratedDuplicate(c))
   .map((c) => ({
-    id: `card-gen-${c.model}`,
+    id: c.id,
     game: "ONE PIECEカードゲーム",
     cardName: c.cardName,
     modelNumber: c.model,
     rarity: c.rarity,
+    variantLabel: c.variantLabel ?? undefined,
     // メルカードの画像は買取価格と同じ商品ページのものなので、価格との対応がずれない
     imageUrl: c.mercardImageUrl,
   }));
 
 const generatedPriceList: PriceData[] = (generatedCards as GeneratedCard[])
-  .filter((c) => !CURATED_MODELS.has(c.model))
+  .filter((c) => !isCuratedDuplicate(c))
   .map((c) => ({
-    id: `price-gen-${c.model}`,
-    cardId: `card-gen-${c.model}`,
+    id: `price-${c.id}`,
+    cardId: c.id,
     shopId: c.shopId,
     price: c.price,
     updatedAt: "2026-09-14T12:00:00+09:00",
@@ -400,7 +406,10 @@ export function cardEntriesForShop(
     .filter((entry): entry is { card: Card; priceData: PriceData } => entry !== null)
     .filter(
       (entry) =>
-        !q || entry.card.cardName.includes(q) || entry.card.modelNumber.includes(q)
+        !q ||
+        entry.card.cardName.includes(q) ||
+        entry.card.modelNumber.includes(q) ||
+        (entry.card.variantLabel?.includes(q) ?? false)
     )
     .sort((a, b) => b.priceData.price - a.priceData.price);
 }

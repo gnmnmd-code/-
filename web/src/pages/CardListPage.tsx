@@ -29,7 +29,13 @@ export default function CardListPage() {
   const sortedCards = useMemo(() => {
     const q = searchText.trim();
     return cards
-      .filter((c) => !q || c.cardName.includes(q) || c.modelNumber.includes(q))
+      .filter(
+        (c) =>
+          !q ||
+          c.cardName.includes(q) ||
+          c.modelNumber.includes(q) ||
+          (c.variantLabel?.includes(q) ?? false)
+      )
       .filter((c) => !set || setCodeForModel(c.modelNumber) === set)
       .map((card) => {
         const entries = priceEntriesForCard(card.id, prefecture || undefined);
@@ -100,6 +106,7 @@ export default function CardListPage() {
                     <span className="card-name">{card.cardName}</span>
                     <span className="card-meta">
                       {card.modelNumber} ・ {card.rarity}
+                      {card.variantLabel && <span className="variant-badge">{card.variantLabel}</span>}
                     </span>
                     <a
                       href={mercariSearchUrl(`${card.cardName} ${card.modelNumber}`)}

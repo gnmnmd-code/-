@@ -8,6 +8,8 @@ export interface Card {
   modelNumber: string;
   rarity: string;
   imageUrl: string;
+  /** パラレル版・SP版・プロモ再録版など、同じ型番でも印刷が違うことを表す注記 */
+  variantLabel?: string;
 }
 
 // 買取店舗を表す型

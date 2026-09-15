@@ -34,6 +34,7 @@ export default function CardDetailPage() {
           <h2>{card.cardName}</h2>
           <p className="card-meta">
             {card.modelNumber} ・ {card.rarity}
+            {card.variantLabel && <span className="variant-badge">{card.variantLabel}</span>}
           </p>
           <p className="diff-row">
             最大差額 <span className="diff-amount">+{formatYen(diff)}</span>

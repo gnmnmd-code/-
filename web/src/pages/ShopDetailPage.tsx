@@ -85,6 +85,7 @@ export default function ShopDetailPage() {
                 <span className="card-name">{card.cardName}</span>
                 <span className="card-meta">
                   {card.modelNumber} ・ {card.rarity}
+                  {card.variantLabel && <span className="variant-badge">{card.variantLabel}</span>}
                 </span>
                 <span className="updated-at">{formatUpdatedAt(priceData.updatedAt)}</span>
               </div>

@@ -276,6 +276,19 @@ main {
   opacity: 0.7;
 }
 
+.variant-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 1;
+}
+
 .badge {
   background: var(--badge-bg);
   color: #fff;

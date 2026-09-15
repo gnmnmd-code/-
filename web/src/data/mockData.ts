@@ -333,3 +333,31 @@ export function maxPriceDifference(cardId: string, prefecture?: string): number 
   if (prices.length === 0) return 0;
   return Math.max(...prices) - Math.min(...prices);
 }
+
+/** 指定店舗で買取しているカードの数 */
+export function cardCountForShop(shopId: string): number {
+  return priceDataList.filter((p) => p.shopId === shopId).length;
+}
+
+/**
+ * 指定店舗で買取しているカード一覧（価格の高い順）
+ * query を指定するとカード名・型番で絞り込む
+ */
+export function cardEntriesForShop(
+  shopId: string,
+  query?: string
+): { card: Card; priceData: PriceData }[] {
+  const q = query?.trim();
+  return priceDataList
+    .filter((p) => p.shopId === shopId)
+    .map((priceData) => {
+      const card = cardById(priceData.cardId);
+      return card ? { card, priceData } : null;
+    })
+    .filter((entry): entry is { card: Card; priceData: PriceData } => entry !== null)
+    .filter(
+      (entry) =>
+        !q || entry.card.cardName.includes(q) || entry.card.modelNumber.includes(q)
+    )
+    .sort((a, b) => b.priceData.price - a.priceData.price);
+}

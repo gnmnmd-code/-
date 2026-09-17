@@ -16,7 +16,10 @@
 //      「パラレル版OP05-118」「パラレル加工版OP05-118『PRB01』」のように、
 //      基本の型番の前後に説明文を付けて表す。
 //   3. カードショップ 遊々亭 買取価格表（shop-i）
-//      （https://yuyu-tei.jp/sell/opc/s/<セットコード>。全59セットを走査）
+//      （https://yuyu-tei.jp/buy/opc/s/<セットコード>。全59セットを走査）
+//      「/buy/」が買取（お店がカードを買う）ページで、「/sell/」は逆に販売（お店がカードを売る＝通販）
+//      ページなので注意（両ページとも「カード買取」「シングルカード販売」等の見出しで明示されている。
+//      URLの見た目とは逆に「/buy/」側が買取価格である点、当初は取り違えていたため要注意）。
 //      型番・買取価格・カード名を取得する。「カード名」欄はパラレル版などの印刷違いを
 //      「ロックス・D・ジーベック(パラレル)(海賊団スーパーパラレル)」のように、
 //      カード名の後ろに括弧書きで付け加えて表す。型番自体は常にクリーンな形式
@@ -142,10 +145,10 @@ function parseMercardModelField(raw) {
   return { model, variantLabel };
 }
 
-/** 遊々亭の1セット分の買取ページ（/sell/opc/s/<code>）を取得し、カード一覧をパースする */
+/** 遊々亭の1セット分の買取ページ（/buy/opc/s/<code>）を取得し、カード一覧をパースする */
 function parseYuyuteiPrices(html) {
   const pattern =
-    /<img\s*\n?src="(https:\/\/card\.yuyu-tei\.jp\/[^"]+)"[^>]*\/>.*?<span\s*\n?class="d-block border border-dark p-1 w-100 text-center my-2">([^<]*)<\/span>.*?<h4 class="text-primary fw-bold">([^<]*)<\/h4>.*?<strong\s*\n?class="d-block text-end ">\s*([\d,]+)\s*円\s*<\/strong>/gs;
+    /<img\s*\n?src="(https:\/\/card\.yuyu-tei\.jp\/[^"]+)"[^>]*\/>.*?<span\s*\n?class="d-block border border-dark p-1 w-100 text-center my-2">([^<]*)<\/span>.*?<h4 class="text-primary fw-bold">([^<]*)<\/h4>.*?<strong\s*\n?class="d-block text-end[^"]*">\s*([\d,]+)\s*円\s*<\/strong>/gs;
   const rows = [];
   for (const m of html.matchAll(pattern)) {
     const [, img, model, name, priceText] = m;
@@ -228,7 +231,7 @@ async function main() {
   for (const [i, code] of yuyuteiSetCodes.entries()) {
     const slug = code.toLowerCase();
     process.stdout.write(`  [yuyutei ${i + 1}/${yuyuteiSetCodes.length}] ${code}\r`);
-    const url = `https://yuyu-tei.jp/sell/opc/s/${slug}`;
+    const url = `https://yuyu-tei.jp/buy/opc/s/${slug}`;
     let html;
     try {
       html = await fetchText(url);
